@@ -27,6 +27,9 @@ import msafluid.MSAFluidSolver2D;
 
 import org.mt4j.MTApplication;
 import org.mt4j.components.MTComponent;
+import org.mt4j.components.visibleComponents.font.FontManager;
+import org.mt4j.components.visibleComponents.font.IFont;
+import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.input.IMTInputEventListener;
 import org.mt4j.input.gestureAction.DefaultDragAction;
 import org.mt4j.input.gestureAction.DefaultScaleAction;
@@ -94,46 +97,46 @@ public class LightSequencerScene extends AbstractScene{
 			System.err.println("Scene only usable when using the OpenGL renderer! - See settings.txt");
         	return;
         }
-		
-        
-        /*this.getCanvas().addInputListener(new IMTInputEventListener() {
-        	//@Override
-        	public boolean processInputEvent(MTInputEvent inEvt){
-        		if(inEvt instanceof AbstractCursorInputEvt){
-        			AbstractCursorInputEvt posEvt = (AbstractCursorInputEvt)inEvt;
-        			if (posEvt.hasTarget() && posEvt.getTargetComponent().equals(getCanvas())){
-        				InputCursor m = posEvt.getCursor();
-        				AbstractCursorInputEvt prev = m.getPreviousEventOf(posEvt);
-        				if (prev == null)
-        					prev = posEvt;
 
-        				Vector3D pos = new Vector3D(posEvt.getPosX(), posEvt.getPosY(), 0);
-        				Vector3D prevPos = new Vector3D(prev.getPosX(), prev.getPosY(), 0);
-        				//do shit hurrrrrrrrr
-        				
-        				for(Light l : lightArray){
-        					if(l.on(prevPos)){
-        						Vector3D diff = pos.getSubtracted(prevPos);
-        						System.out.println("moving" + diff);
-        						l.move((int)diff.x, (int)diff.y,mtApplication.g);
-        						break;
-        					}
-        				}
-        			}
-        		}
-        		return false;
-        	}
+		
+		IFont fontReset = FontManager.getInstance().createFont(app, "arial.ttf", 18,  new MTColor(255,255,255),  new MTColor(255,255,255));
+		MTTextArea reset = new MTTextArea(0, 0, 60, 20, fontReset, mtApplication);
+		reset.setText("Reset");
+		
+		this.getCanvas().addChild(reset);
+		
+		reset.setFillColor(new MTColor(50,50,50,255));
+		
+		reset.unregisterAllInputProcessors();
+		reset.removeAllGestureEventListeners();
+		
+		reset.registerInputProcessor(new TapAndHoldProcessor(app,2000));
+		reset.addGestureListener(TapAndHoldProcessor.class, new IGestureEventListener() {
+			public boolean processGestureEvent(MTGestureEvent ge) {
+				TapAndHoldEvent th = (TapAndHoldEvent)ge;
+				switch (th.getId()) {
+				case TapAndHoldEvent.GESTURE_DETECTED:
+					break;
+				case TapAndHoldEvent.GESTURE_UPDATED:
+					break;
+				case TapAndHoldEvent.GESTURE_ENDED:
+					if (th.isHoldComplete()){
+						for(int i = lightArray.size()-1;i>=0;i--){
+							Light l = lightArray.get(i);
+							if(!l.inDock()){
+								removeLight(l);
+							}
+						}	
+					}
+					break;
+				default:
+					break;
+				}
+				return false;
+			}
 		});
-		*/
-        
-
-        //FIXME make componentInputProcessor?
-        
-        //this.getCanvas().addChild(new FluidImage(mtApplication));
-        //this.getCanvas().addChild(pong);
 		
 		
-        
         this.getCanvas().setDepthBufferDisabled(true);
 	}
 	
