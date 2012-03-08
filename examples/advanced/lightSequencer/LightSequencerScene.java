@@ -28,11 +28,22 @@ import msafluid.MSAFluidSolver2D;
 import org.mt4j.MTApplication;
 import org.mt4j.components.MTComponent;
 import org.mt4j.input.IMTInputEventListener;
+import org.mt4j.input.gestureAction.DefaultDragAction;
+import org.mt4j.input.gestureAction.DefaultScaleAction;
 import org.mt4j.input.inputData.AbstractCursorInputEvt;
 import org.mt4j.input.inputData.InputCursor;
 import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.input.inputProcessors.IGestureEventListener;
+import org.mt4j.input.inputProcessors.MTGestureEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
+import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor;
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
+import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MT4jSettings;
+import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
@@ -58,7 +69,7 @@ public class LightSequencerScene extends AbstractScene{
 	private ArrayList<Light> lightArray;
 	private Sequencer seq;
 	
-	public static int NUM_LIGHTS = 1;
+	public static int NUM_LIGHTS = 10;
 
 	public LightSequencerScene(final MTApplication mtApplication, String name) {
 		super(mtApplication, name);
@@ -66,12 +77,23 @@ public class LightSequencerScene extends AbstractScene{
 		this.seq = new Sequencer(app, 22);
 		this.getCanvas().addChild(seq.p);
 		
+		this.registerGlobalInputProcessor(new CursorTracer(app, this));
+		
 		lightArray = new ArrayList<Light>();
 		
-		for(int i = 0; i < 24; i++)
+		for(int i = 0; i < NUM_LIGHTS; i++)
 		{
-			lightArray.add(new Light(mtApplication,0+40*i,0,i));
-			this.getCanvas().addChild(lightArray.get(i));
+			Light l = new Light(mtApplication,0+40*i,0,i);
+			
+			lightArray.add(l);
+			l.unregisterAllInputProcessors();
+			l.removeAllGestureEventListeners();
+			l.registerInputProcessor(new ScaleProcessor(app));
+			l.addGestureListener(ScaleProcessor.class, l);
+			l.registerInputProcessor(new DragProcessor(app));
+			l.addGestureListener(DragProcessor.class, l);
+			this.getCanvas().addChild(l);
+			
 		}
 		
 		if (!MT4jSettings.getInstance().isOpenGlMode()){
@@ -80,7 +102,7 @@ public class LightSequencerScene extends AbstractScene{
         }
 		
         
-        this.getCanvas().addInputListener(new IMTInputEventListener() {
+        /*this.getCanvas().addInputListener(new IMTInputEventListener() {
         	//@Override
         	public boolean processInputEvent(MTInputEvent inEvt){
         		if(inEvt instanceof AbstractCursorInputEvt){
@@ -108,6 +130,7 @@ public class LightSequencerScene extends AbstractScene{
         		return false;
         	}
 		});
+		*/
         
 
         //FIXME make componentInputProcessor?
