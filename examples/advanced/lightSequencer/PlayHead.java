@@ -6,7 +6,7 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 
 public class PlayHead extends MTComponent{
-	private int position = 0;
+	public int position = 0;
 	private PApplet applet;
 	
 	public PlayHead(PApplet applet) {
@@ -14,7 +14,7 @@ public class PlayHead extends MTComponent{
 		this.applet = applet;
 	}
 	
-	private void step() {
+	public void step() {
 		position++;
 		if (position > applet.width) position = 0;
 	}

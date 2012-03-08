@@ -12,7 +12,9 @@ public class Sequencer extends MTComponent{
 	public Sequencer(PApplet applet, int lights) {
 		super(applet);
 		this.applet = applet;
+		this.p = new PlayHead(applet);
 		this.lights = new LightManager(applet, p, lights);
+		this.lights.start();
 	}
 	
 

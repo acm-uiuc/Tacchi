@@ -56,12 +56,14 @@ public class LightSequencerScene extends AbstractScene{
 	private MTApplication app;
 	
 	private ArrayList<Light> lightArray;
+	private Sequencer seq;
 	
 	public static int NUM_LIGHTS = 24;
 
 	public LightSequencerScene(MTApplication mtApplication, String name) {
 		super(mtApplication, name);
 		this.app = mtApplication;
+		this.seq = new Sequencer(app, 22);
 		
 		lightArray = new ArrayList<Light>();
 		
@@ -112,7 +114,7 @@ public class LightSequencerScene extends AbstractScene{
 	public void drawAndUpdate(PGraphics g, long timeDelta) {
 //		this.drawFluidImage();
 		super.drawAndUpdate(g, timeDelta);
-		
+		seq.p.draw(g);
 		//graphics.fill(30,160,30);
 		//graphics.rect(10,10,100,100);
 		//System.out.println("asdf");
