@@ -8,6 +8,8 @@ import org.mt4j.components.visibleComponents.shapes.MTRectangle;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle.PositionAnchor;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleEvent;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
@@ -15,7 +17,7 @@ import processing.core.PFont;
 import processing.core.PGraphics;
 
 public class Light extends MTRectangle implements IGestureEventListener {
-	public static int HEIGHT = 40;
+	public static int HEIGHT = 200;
 	
 	//colors
 	private int red;
@@ -86,17 +88,16 @@ public class Light extends MTRectangle implements IGestureEventListener {
 	}
 	
 	public boolean processGestureEvent(MTGestureEvent ge) {
-		System.out.println("gesture");
-		System.out.println(ge);
-		/*switch (te.getId()) {
-		case MTGestureEvent.GESTURE_DETECTED:
-			System.out.println("Gesture detected");
-			break;
-		case MTGestureEvent.GESTURE_UPDATED:
-			break;
-		case MTGestureEvent.GESTURE_ENDED:
-			break;
-		}*/
+		if(ge.getClass() == DragEvent.class){
+			DragEvent de = (DragEvent)ge;
+			Vector3D diff = de.getTranslationVect();
+			Vector3D p = this.getPosition(TransformSpace.GLOBAL);
+			p.x += diff.x;
+			p.y += diff.y;
+			this.setPositionGlobal(p);
+		}else if(ge.getClass() == ScaleEvent.class){
+			System.out.println("scale");
+		}
 		return false;
 	}
 
