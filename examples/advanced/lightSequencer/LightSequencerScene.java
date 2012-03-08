@@ -39,6 +39,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEven
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer;
 import org.mt4j.sceneManagement.AbstractScene;
@@ -82,17 +83,7 @@ public class LightSequencerScene extends AbstractScene{
 		
 		for(int i = 0; i < NUM_LIGHTS; i++)
 		{
-			Light l = new Light(mtApplication,0+40*i+2,9*app.height/10 + 10,i);
-			
-			lightArray.add(l);
-			l.unregisterAllInputProcessors();
-			l.removeAllGestureEventListeners();
-			l.registerInputProcessor(new ScaleProcessor(app));
-			l.addGestureListener(ScaleProcessor.class, l);
-			l.registerInputProcessor(new DragProcessor(app));
-			l.addGestureListener(DragProcessor.class, l);
-			this.getCanvas().addChild(l);
-			
+			this.addNewLight(i);
 		}
 		
 		if (!MT4jSettings.getInstance().isOpenGlMode()){
@@ -189,6 +180,27 @@ public class LightSequencerScene extends AbstractScene{
 		gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		mtApp.colorMode(PApplet.RGB, 255);  
 		 */
+	}
+	
+	public void addNewLight(int i){
+		Light l = new Light(this.app,10+(Light.HEIGHT+10)*i,app.height-(Light.HEIGHT + 10),i,this);
+		
+		lightArray.add(l);
+		l.unregisterAllInputProcessors();
+		l.removeAllGestureEventListeners();
+		l.registerInputProcessor(new ScaleProcessor(app));
+		l.addGestureListener(ScaleProcessor.class, l);
+		l.registerInputProcessor(new DragProcessor(app));
+		l.addGestureListener(DragProcessor.class, l);
+		l.registerInputProcessor(new TapAndHoldProcessor(app,1500));
+		l.addGestureListener(TapAndHoldProcessor.class,l);
+		
+		this.getCanvas().addChild(l);
+	}
+	
+	public void removeLight(Light l){
+		lightArray.remove(l);
+		this.getCanvas().removeChild(l);
 	}
 	
 	

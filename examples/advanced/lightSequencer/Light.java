@@ -12,6 +12,7 @@ import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldEvent;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
@@ -30,10 +31,12 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 	//light controlling
 	private int light;
 	
+	private LightSequencerScene parent;
+	
 	PFont font;
 	PApplet applet;
 	
-	public Light(PApplet pApplet,int x,int y,int light){
+	public Light(PApplet pApplet,int x,int y,int light,LightSequencerScene parent){
 		super(x,y,//upperleft
 				10,//z??
 				HEIGHT,//width
@@ -46,6 +49,8 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 		
 		applet = pApplet;
 		
+		this.parent = parent;
+		
 		font = applet.loadFont("GillSans-Bold-48.vlw");
 		applet.textFont(font, 20);
 		applet.textAlign(applet.CENTER);
@@ -57,7 +62,7 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 	
 	@Override
 	public void drawComponent(PGraphics g) {
-	    Vector3D c = this.getCenterPointLocal();
+	    Vector3D c = this.getCenterPointGlobal();
 		g.colorMode(g.HSB, applet.height);
 		int color = g.color(c.y, applet.height, applet.height);
 		red = (g.color(color) >> 16) & 0xFF;
@@ -94,6 +99,7 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 			Vector3D p = this.getCenterPointGlobal();
 			p.x += diff.x;
 			p.y += diff.y;
+			
 			this.setPositionGlobal(p);
 		}else if(ge.getClass() == ScaleEvent.class){
 			ScaleEvent se = (ScaleEvent)ge;
@@ -104,6 +110,10 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 				newW = HEIGHT;
 			}
 			this.setSizeLocal(newW, HEIGHT);
+		}else if(ge.getClass() == TapAndHoldEvent.class){
+			if(ge.getId() == MTGestureEvent.GESTURE_ENDED){
+				parent.removeLight(this);
+			}
 		}
 		return false;
 	}
