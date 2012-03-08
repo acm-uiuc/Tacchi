@@ -48,6 +48,7 @@ import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
+import processing.core.PFont;
 import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.opengl.PGraphicsOpenGL;
@@ -71,10 +72,13 @@ public class LightSequencerScene extends AbstractScene{
 	private Sequencer seq;
 	
 	public static int NUM_LIGHTS = 22;
+	
+	private PFont font;
 
 	public LightSequencerScene(final MTApplication mtApplication, String name) {
 		super(mtApplication, name);
 		this.app = mtApplication;
+		this.font = app.loadFont("GillSans-Bold-48.vlw");
 
 		this.registerGlobalInputProcessor(new CursorTracer(app, this));
 		lightArray = new ArrayList<Light>();
@@ -127,6 +131,8 @@ public class LightSequencerScene extends AbstractScene{
         
         //this.getCanvas().addChild(new FluidImage(mtApplication));
         //this.getCanvas().addChild(pong);
+		
+		
         
         this.getCanvas().setDepthBufferDisabled(true);
 	}
@@ -184,7 +190,7 @@ public class LightSequencerScene extends AbstractScene{
 	
 	public void addNewLight(int i){
 		Vector3D p = this.getLightLocation(i);
-		Light l = new Light(this.app,(int)p.x,(int)p.y,i,this);
+		Light l = new Light(this.app,(int)p.x,(int)p.y,i,this,this.font);
 		
 		lightArray.add(l);
 		l.unregisterAllInputProcessors();

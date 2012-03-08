@@ -38,7 +38,7 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 	PFont font;
 	PApplet applet;
 	
-	public Light(PApplet pApplet,int x,int y,int light,LightSequencerScene parent){
+	public Light(PApplet pApplet,int x,int y,int light,LightSequencerScene parent,PFont f){
 		super(x,y,//upperleft
 				1,//z??
 				HEIGHT,//width
@@ -55,7 +55,7 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 		
 		applet = pApplet;
 		
-		font = applet.loadFont("GillSans-Bold-48.vlw");
+		font = f;
 		applet.textFont(font, 20);
 		applet.textAlign(applet.CENTER);
 		
@@ -132,7 +132,7 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 				}else if(ge.getId() == MTGestureEvent.GESTURE_ENDED){
 					this.setPositionGlobal(this.parent.getLightLocation(light));
 				}
-			}else{
+			}else if(ge.getId() == MTGestureEvent.GESTURE_ENDED){
 				if(inDock()){
 					this.parent.removeLight(this);
 				}
