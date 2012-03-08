@@ -22,7 +22,7 @@ public class Sequencer extends MTComponent{
 	
 	public void drawComponent(PGraphics g) {
 		g.fill(100);
-		g.rect(0, 9*applet.height/10, applet.width, applet.height/10 + 1);
+		g.rect(0, applet.height-(Light.HEIGHT+20), applet.width, Light.HEIGHT+20);
 	}
 	
 

@@ -12,6 +12,7 @@ import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldEvent;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
@@ -30,10 +31,12 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 	//light controlling
 	private int light;
 	
+	private LightSequencerScene parent;
+	
 	PFont font;
 	PApplet applet;
 	
-	public Light(PApplet pApplet,int x,int y,int light){
+	public Light(PApplet pApplet,int x,int y,int light,LightSequencerScene parent){
 		super(x,y,//upperleft
 				10,//z??
 				HEIGHT,//width
@@ -45,6 +48,8 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 		this.light = light;
 		
 		applet = pApplet;
+		
+		this.parent = parent;
 		
 		font = applet.loadFont("GillSans-Bold-48.vlw");
 		applet.textFont(font, 20);
@@ -111,6 +116,7 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 			Vector3D p = this.getCenterPointGlobal();
 			p.x += diff.x;
 			p.y += diff.y;
+			
 			this.setPositionGlobal(p);
 		}else if(ge.getClass() == ScaleEvent.class){
 			ScaleEvent se = (ScaleEvent)ge;
@@ -121,6 +127,10 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 				newW = HEIGHT;
 			}
 			this.setSizeLocal(newW, HEIGHT);
+		}else if(ge.getClass() == TapAndHoldEvent.class){
+			if(ge.getId() == MTGestureEvent.GESTURE_ENDED){
+				parent.removeLight(this);
+			}
 		}
 		return false;
 	}
