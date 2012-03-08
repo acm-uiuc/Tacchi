@@ -20,8 +20,9 @@ public class PlayHead extends MTComponent{
 	}
 	
 	public void draw(PGraphics g) {
+		g.pushStyle();
 	    g.fill(150,100,150,150);
-	    g.stroke(0);
+	    g.stroke(255);
 	    g.strokeWeight(3);
 		g.line(position, 0, position, applet.height);
 	}
