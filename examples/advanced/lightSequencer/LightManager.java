@@ -41,9 +41,12 @@ class LightManager extends Thread{
 				p.step();
 				for(int i = 0; i < lightArray.size(); i++) {
 					Light temp = lightArray.get(i);
+					if(!temp.inDock())
+					{
 					data[3*temp.getNum()] = new Integer(temp.red()*temp.distance(p.position)/100);
 					data[3*temp.getNum()+1] = new Integer(temp.blue()*temp.distance(p.position)/100);
 					data[3*temp.getNum()+2] = new Integer(temp.green()*temp.distance(p.position)/100);
+					}
 				}
 				for(int i = 0; i < data.length; i++)
 				{
