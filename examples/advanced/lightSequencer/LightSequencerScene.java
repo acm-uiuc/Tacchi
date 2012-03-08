@@ -200,7 +200,7 @@ public class LightSequencerScene extends AbstractScene{
 	}
 	
 	public Vector3D getLightLocation(int i){
-		return new Vector3D(10+(Light.HEIGHT+10)*i,app.height-(Light.HEIGHT + 10));
+		return new Vector3D((Light.HEIGHT+10)*i+Light.HEIGHT/2+10,app.height-(Light.HEIGHT)+10);
 	}
 	
 	public void removeLight(Light l){
