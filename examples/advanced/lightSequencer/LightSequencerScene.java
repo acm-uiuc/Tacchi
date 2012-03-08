@@ -70,7 +70,7 @@ public class LightSequencerScene extends AbstractScene{
 	private ArrayList<Light> lightArray;
 	private Sequencer seq;
 	
-	public static int NUM_LIGHTS = 10;
+	public static int NUM_LIGHTS = 22;
 
 	public LightSequencerScene(final MTApplication mtApplication, String name) {
 		super(mtApplication, name);
@@ -198,7 +198,7 @@ public class LightSequencerScene extends AbstractScene{
 	}
 	
 	public Vector3D getLightLocation(int i){
-		return new Vector3D((Light.HEIGHT+10)*i+Light.HEIGHT/2+10,app.height-(Light.HEIGHT)+10);
+		return new Vector3D(5+(Light.HEIGHT+5)*i+Light.HEIGHT/2+10,app.height-(Light.HEIGHT)+5);
 	}
 	
 	public void removeLight(Light l){

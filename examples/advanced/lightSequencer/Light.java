@@ -21,7 +21,7 @@ import processing.core.PFont;
 import processing.core.PGraphics;
 
 public class Light extends MTRoundRectangle implements IGestureEventListener {
-	public static int HEIGHT = 40;
+	public static int HEIGHT = 30;
 	
 	//colors
 	private int red;
@@ -87,7 +87,7 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 	    
 	    super.drawComponent(g);
 	    g.fill(255);
-	    g.text(""+light, d.x, d.y);
+	    g.text(""+light, d.x, d.y+5);
 	}
 	
 	
