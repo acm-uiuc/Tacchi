@@ -40,18 +40,20 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 	
 	public Light(PApplet pApplet,int x,int y,int light,LightSequencerScene parent){
 		super(x,y,//upperleft
-				10,//z??
+				1,//z??
 				HEIGHT,//width
 				HEIGHT,//height
 				HEIGHT/2,//the arc width
 				HEIGHT/2,//the arc height
 				pApplet);
+		
+		this.parent = parent;
+		
+		this.setPositionGlobal(this.parent.getLightLocation(light));
 
 		this.light = light;
 		
 		applet = pApplet;
-		
-		this.parent = parent;
 		
 		font = applet.loadFont("GillSans-Bold-48.vlw");
 		applet.textFont(font, 20);
