@@ -183,7 +183,8 @@ public class LightSequencerScene extends AbstractScene{
 	}
 	
 	public void addNewLight(int i){
-		Light l = new Light(this.app,10+(Light.HEIGHT+10)*i,app.height-(Light.HEIGHT + 10),i,this);
+		Vector3D p = this.getLightLocation(i);
+		Light l = new Light(this.app,(int)p.x,(int)p.y,i,this);
 		
 		lightArray.add(l);
 		l.unregisterAllInputProcessors();
@@ -196,6 +197,10 @@ public class LightSequencerScene extends AbstractScene{
 		l.addGestureListener(TapAndHoldProcessor.class,l);
 		
 		this.getCanvas().addChild(l);
+	}
+	
+	public Vector3D getLightLocation(int i){
+		return new Vector3D(10+(Light.HEIGHT+10)*i,app.height-(Light.HEIGHT + 10));
 	}
 	
 	public void removeLight(Light l){

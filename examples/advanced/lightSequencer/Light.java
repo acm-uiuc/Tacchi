@@ -28,6 +28,8 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 	private int green;
 	private int blue;
 	
+	private boolean docked;
+	
 	//light controlling
 	private int light;
 	
@@ -54,6 +56,8 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 		font = applet.loadFont("GillSans-Bold-48.vlw");
 		applet.textFont(font, 20);
 		applet.textAlign(applet.CENTER);
+		
+		docked = true;
 	}
 	
 	public int distance(int x){
@@ -87,7 +91,7 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 	
 	public boolean inDock() {
 	    Vector3D c = this.getCenterPointGlobal();
-		if (c.x > 9*applet.height/10)
+		if (c.y > 9*applet.height/10)
 			return true;
 		else return false;
 	}
@@ -118,6 +122,15 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 			p.y += diff.y;
 			
 			this.setPositionGlobal(p);
+			
+			if(docked){
+				if(!inDock()){
+					parent.addNewLight(light);
+					docked = false;
+				}else if(ge.getId() == MTGestureEvent.GESTURE_ENDED){
+					this.setPositionGlobal(this.parent.getLightLocation(light));
+				}
+			}
 		}else if(ge.getClass() == ScaleEvent.class){
 			ScaleEvent se = (ScaleEvent)ge;
 			float factor = se.getScaleFactorX();
@@ -128,9 +141,9 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 			}
 			this.setSizeLocal(newW, HEIGHT);
 		}else if(ge.getClass() == TapAndHoldEvent.class){
-			if(ge.getId() == MTGestureEvent.GESTURE_ENDED){
-				parent.removeLight(this);
-			}
+			//if(ge.getId() == MTGestureEvent.GESTURE_ENDED){
+			//	parent.removeLight(this);
+			//}
 		}
 		return false;
 	}
