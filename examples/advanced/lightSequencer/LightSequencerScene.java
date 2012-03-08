@@ -193,8 +193,6 @@ public class LightSequencerScene extends AbstractScene{
 		l.addGestureListener(ScaleProcessor.class, l);
 		l.registerInputProcessor(new DragProcessor(app));
 		l.addGestureListener(DragProcessor.class, l);
-		l.registerInputProcessor(new TapAndHoldProcessor(app,1500));
-		l.addGestureListener(TapAndHoldProcessor.class,l);
 		
 		this.getCanvas().addChild(l);
 	}

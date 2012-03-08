@@ -132,6 +132,10 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 				}else if(ge.getId() == MTGestureEvent.GESTURE_ENDED){
 					this.setPositionGlobal(this.parent.getLightLocation(light));
 				}
+			}else{
+				if(inDock()){
+					this.parent.removeLight(this);
+				}
 			}
 		}else if(ge.getClass() == ScaleEvent.class){
 			ScaleEvent se = (ScaleEvent)ge;
@@ -142,10 +146,6 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 				newW = HEIGHT;
 			}
 			this.setSizeLocal(newW, HEIGHT);
-		}else if(ge.getClass() == TapAndHoldEvent.class){
-			//if(ge.getId() == MTGestureEvent.GESTURE_ENDED){
-			//	parent.removeLight(this);
-			//}
 		}
 		return false;
 	}
