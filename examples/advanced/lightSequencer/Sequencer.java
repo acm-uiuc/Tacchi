@@ -1,5 +1,7 @@
 package advanced.lightSequencer;
 
+import java.util.ArrayList;
+
 import org.mt4j.components.MTComponent;
 
 import processing.core.PApplet;
@@ -10,11 +12,11 @@ public class Sequencer extends MTComponent{
 	LightManager lights;
 	PApplet applet;
 	
-	public Sequencer(PApplet applet, int lights) {
+	public Sequencer(PApplet applet, int lights, ArrayList<Light> lightsArray) {
 		super(applet);
 		this.applet = applet;
 		this.p = new PlayHead(applet);
-		this.lights = new LightManager(applet, p, lights);
+		this.lights = new LightManager(applet, p, lightsArray, lights);
 		this.lights.start();
 	}
 	

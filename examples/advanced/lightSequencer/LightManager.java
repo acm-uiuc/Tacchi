@@ -14,10 +14,14 @@ class LightManager extends Thread{
 	OSCClient osc;
 	PApplet applet;
 	PlayHead p;
+	ArrayList<Light> lightArray;
+	int lights;
 
-	public LightManager(PApplet applet, PlayHead p, int lights) {
+	public LightManager(PApplet applet, PlayHead p, ArrayList<Light> lightArray, int lights) {
 		this.applet = applet;
 		this.p = p;
+		this.lightArray = lightArray;
+		this.lights = lights;
 
 		try {
 			osc = OSCClient.newUsing(OSCClient.UDP);
@@ -30,9 +34,27 @@ class LightManager extends Thread{
 	
 	public void run(){
 		long last = 0;
+		Object[] data = new Object[lights*3]; 
 		while(true) {
 			if(System.currentTimeMillis() - last > 10) {
+				
 				p.step();
+				for(int i = 0; i < lightArray.size(); i++) {
+					Light temp = lightArray.get(i);
+					data[3*temp.getNum()] = new Integer(temp.red()*temp.distance(p.position)/100);
+					data[3*temp.getNum()+1] = new Integer(temp.blue()*temp.distance(p.position)/100);
+					data[3*temp.getNum()+2] = new Integer(temp.green()*temp.distance(p.position)/100);
+				}
+				for(int i = 0; i < data.length; i++)
+				{
+					if(data[i] == null) data[i] = new Integer(0);
+				}
+				OSCPacket p = new OSCMessage("/setcolors", data);
+				try {
+					osc.send(p);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				last = System.currentTimeMillis();
 			}
 		}

@@ -17,7 +17,7 @@ import processing.core.PFont;
 import processing.core.PGraphics;
 
 public class Light extends MTRectangle implements IGestureEventListener {
-	public static int HEIGHT = 200;
+	public static int HEIGHT = 40;
 	
 	//colors
 	private int red;
@@ -50,8 +50,13 @@ public class Light extends MTRectangle implements IGestureEventListener {
 		this.setWidthLocal(width);
 	}
 	
-	public boolean contained(int x){
-		return true;//x>=a. && x<=(this.x+this.width);
+	public int distance(int x){
+	    Vector3D c = this.getCenterPointLocal();
+	    float w = this.getWidthXY(TransformSpace.GLOBAL);
+	    int r = 100/ (int) w;
+		if (x > c.x - w/2 && x < c.x + w/2)
+			return 100 - Math.abs((int)c.x - x)*r;
+		else return 0;
 	}
 	
 	@Override
@@ -85,6 +90,10 @@ public class Light extends MTRectangle implements IGestureEventListener {
 	
 	public int green(){
 		return green;
+	}
+	
+	public int getNum(){
+		return light;
 	}
 	
 	public boolean processGestureEvent(MTGestureEvent ge) {

@@ -74,15 +74,15 @@ public class LightSequencerScene extends AbstractScene{
 	public LightSequencerScene(final MTApplication mtApplication, String name) {
 		super(mtApplication, name);
 		this.app = mtApplication;
-		this.seq = new Sequencer(app, 22);
-		this.getCanvas().addChild(seq.p);
-		this.getCanvas().addChild(seq);
+
 		this.registerGlobalInputProcessor(new CursorTracer(app, this));
 		lightArray = new ArrayList<Light>();
-		
+		this.seq = new Sequencer(app, 22, lightArray);
+		this.getCanvas().addChild(seq.p);
+		this.getCanvas().addChild(seq);		
 		for(int i = 0; i < NUM_LIGHTS; i++)
 		{
-			Light l = new Light(mtApplication,0+40*i+2,9*app.height/10 + 10,i);
+			Light l = new Light(mtApplication,0+40*i+2	,9*app.height/10 + 10,i);
 			
 			lightArray.add(l);
 			l.unregisterAllInputProcessors();
