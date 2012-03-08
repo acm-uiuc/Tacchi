@@ -31,12 +31,10 @@ class LightManager extends Thread{
 	public void run(){
 		long last = 0;
 		while(true) {
-			if(System.currentTimeMillis() - last > 500)
-			{
+			if(System.currentTimeMillis() - last > 10) {
 				p.step();
-				System.out.println(p.position);
+				last = System.currentTimeMillis();
 			}
-			last = System.currentTimeMillis();
 		}
 	}
 	

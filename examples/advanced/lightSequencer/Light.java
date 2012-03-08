@@ -6,6 +6,7 @@ import org.mt4j.components.MTComponent;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
+import processing.core.PFont;
 import processing.core.PGraphics;
 
 public class Light extends MTComponent {
@@ -26,11 +27,19 @@ public class Light extends MTComponent {
 	//light controlling
 	private int light;
 	
+	PFont font;
+	PApplet applet;
+	
 	public Light(PApplet pApplet) {
 		super(pApplet);
 		x = 0;
 		y = 0;
 		width = HEIGHT;
+		applet = pApplet;
+		
+		font = applet.loadFont("GillSans-Bold-10.vlw");
+		applet.textFont(font, 10);
+		applet.textAlign(applet.CENTER);
 	}
 	
 	public Light(PApplet pApplet,int x,int y,int light){
@@ -39,12 +48,17 @@ public class Light extends MTComponent {
 		this.y = y;
 		width = HEIGHT;
 		this.light = light;
+		
+		applet = pApplet;
+		
+		font = applet.loadFont("GillSans-Bold-48.vlw");
+		applet.textFont(font, 20);
+		applet.textAlign(applet.CENTER);
 	}
 	
 	public void move(int x,int y,PGraphics g){
 		this.x += x;
 		this.y += y;
-		calcColors(g);
 	}
 	
 	public void resize(int width){
@@ -62,59 +76,20 @@ public class Light extends MTComponent {
 	
 	@Override
 	public void drawComponent(PGraphics g) {
-		g.fill(((float)light/24*255),100,150,150);
+		g.colorMode(g.HSB, applet.height);
+		int color = g.color(y, applet.height, applet.height);
+		red = (g.color(color) >> 16) & 0xFF;
+		blue = (g.color(color) >> 8) & 0xFF;
+		green = g.color(color) & 0xFF;
+		g.colorMode(g.RGB, 255);
+		g.fill(red, green, blue, 150);
 	    g.stroke(0);
 	    g.strokeWeight(3);
-	    
-		//g.ellipseMode(CENTER);
 		g.ellipse(x+width/2,y+HEIGHT/2,width,HEIGHT);
+	    g.fill(255);
+	    g.text(""+light, x+width/2, y+2*width/3);
+		//g.ellipseMode(CENTER);
 		
-	}
-	
-	
-	private void calcColors(PGraphics g){
-		float v = 1;
-		float Shsv = 1;
-		
-		
-		int height = g.height;
-		float hue = (float)x/height*360;
-		float hueP = hue/60;
-		
-		float C = v*Shsv;
-		float X = C*(1-Math.abs(hueP%2-1));
-		
-		int m = (int)(v - C);
-		
-		if(hueP >= 0 && hueP >1){
-			red = (int) (C + m);
-			green = (int) (X + m);
-			blue = m;
-		}else if(hueP < 2){
-			red = (int) (X + m);
-			green = (int) (C + m);
-			blue = m;
-		}else if(hueP < 3){
-			red = m;
-			green = (int) (C + m);
-			blue = (int) (X + m);
-		}else if(hueP < 4){
-			red = m;
-			green = (int) (X + m);
-			blue = (int) (C + m);
-		}else if(hueP < 5){
-			red = (int) (X + m);
-			green = 0;
-			blue = (int) (C + m);
-		}else if(hueP < 6){
-			red = (int) (C + m);
-			green = 0;
-			blue = (int) (X + m);
-		}else{
-			red = m;
-			green = m;
-			blue = m;
-		}
 	}
 	
 	public int red(){

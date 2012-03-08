@@ -19,7 +19,7 @@ public class PlayHead extends MTComponent{
 		if (position > applet.width) position = 0;
 	}
 	
-	public void draw(PGraphics g) {
+	public void drawComponent(PGraphics g) {
 		g.pushStyle();
 	    g.fill(150,100,150,150);
 	    g.stroke(255);
