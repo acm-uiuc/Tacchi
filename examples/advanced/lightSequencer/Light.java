@@ -140,7 +140,6 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 		}
 		
 		if(ge.getClass() == ScaleEvent.class){
-			System.out.println("Scale event");
 			ScaleEvent se = (ScaleEvent)ge;
 			float factor = se.getScaleFactorX();
 			float w = this.getWidthXY(TransformSpace.GLOBAL);
