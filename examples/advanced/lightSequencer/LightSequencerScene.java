@@ -78,6 +78,7 @@ public class LightSequencerScene extends AbstractScene{
         				Vector3D pos = new Vector3D(posEvt.getPosX(), posEvt.getPosY(), 0);
         				Vector3D prevPos = new Vector3D(prev.getPosX(), prev.getPosY(), 0);
         				//do shit hurrrrrrrrr
+        				System.out.println(pos);
         			}
         		}
         		return false;
