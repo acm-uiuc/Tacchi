@@ -65,7 +65,7 @@ public class LightSequencerScene extends AbstractScene{
 		
 		lightArray = new ArrayList<Light>();
 		
-		for(int i = 0; i < 24; i++)
+		for(int i = 0; i < NUM_LIGHTS; i++)
 		{
 			lightArray.add(new Light(mtApplication,0+40*i,0,i));
 			this.getCanvas().addChild(lightArray.get(i));
