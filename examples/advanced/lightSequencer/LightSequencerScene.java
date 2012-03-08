@@ -58,9 +58,9 @@ public class LightSequencerScene extends AbstractScene{
 	private ArrayList<Light> lightArray;
 	private Sequencer seq;
 	
-	public static int NUM_LIGHTS = 24;
+	public static int NUM_LIGHTS = 1;
 
-	public LightSequencerScene(MTApplication mtApplication, String name) {
+	public LightSequencerScene(final MTApplication mtApplication, String name) {
 		super(mtApplication, name);
 		this.app = mtApplication;
 		this.seq = new Sequencer(app, 22);
@@ -69,7 +69,8 @@ public class LightSequencerScene extends AbstractScene{
 		
 		for(int i = 0; i < 24; i++)
 		{
-			lightArray.add(new Light(mtApplication,0,0,i));
+			lightArray.add(new Light(mtApplication,0+40*i,0,i));
+			this.getCanvas().addChild(lightArray.get(i));
 		}
 		
 		if (!MT4jSettings.getInstance().isOpenGlMode()){
@@ -92,7 +93,15 @@ public class LightSequencerScene extends AbstractScene{
         				Vector3D pos = new Vector3D(posEvt.getPosX(), posEvt.getPosY(), 0);
         				Vector3D prevPos = new Vector3D(prev.getPosX(), prev.getPosY(), 0);
         				//do shit hurrrrrrrrr
-        				System.out.println(pos);
+        				
+        				for(Light l : lightArray){
+        					if(l.on(prevPos)){
+        						Vector3D diff = pos.getSubtracted(prevPos);
+        						System.out.println("moving" + diff);
+        						l.move((int)diff.x, (int)diff.y,mtApplication.g);
+        						break;
+        					}
+        				}
         			}
         		}
         		return false;

@@ -42,8 +42,8 @@ public class Light extends MTComponent {
 	}
 	
 	public void move(int x,int y,PGraphics g){
-		this.x = x;
-		this.y = y;
+		this.x += x;
+		this.y += y;
 		calcColors(g);
 	}
 	
@@ -52,7 +52,7 @@ public class Light extends MTComponent {
 	}
 	
 	public boolean on(Vector3D v){
-		return this.contained((int)v.x) && v.y >= this.y-width/2 && v.y <=this.y+width/2;
+		return this.contained((int)v.x) && v.y >= this.y && v.y <=this.y+HEIGHT;
 		
 	}
 	
@@ -62,12 +62,12 @@ public class Light extends MTComponent {
 	
 	@Override
 	public void drawComponent(PGraphics g) {
-		g.fill(150,100,150,150);
+		g.fill(((float)light/24*255),100,150,150);
 	    g.stroke(0);
 	    g.strokeWeight(3);
 	    
 		//g.ellipseMode(CENTER);
-		g.ellipse(x+HEIGHT/2+width/2,y+HEIGHT/2,width,HEIGHT);
+		g.ellipse(x+width/2,y+HEIGHT/2,width,HEIGHT);
 		
 	}
 	
