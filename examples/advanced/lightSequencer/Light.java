@@ -3,61 +3,46 @@ package advanced.lightSequencer;
 import java.util.Vector;
 
 import org.mt4j.components.MTComponent;
+import org.mt4j.components.TransformSpace;
+import org.mt4j.components.visibleComponents.shapes.MTRectangle;
+import org.mt4j.components.visibleComponents.shapes.MTRectangle.PositionAnchor;
+import org.mt4j.input.inputProcessors.IGestureEventListener;
+import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
 
-public class Light extends MTComponent {
+public class Light extends MTRectangle implements IGestureEventListener {
 	public static int HEIGHT = 40;
-	
-	//location on screen
-	private int x;
-	private int y;
 	
 	//colors
 	private int red;
 	private int green;
 	private int blue;
 	
-	//length of light
-	private int width;
-	
 	//light controlling
 	private int light;
-	
-	public Light(PApplet pApplet) {
-		super(pApplet);
-		x = 0;
-		y = 0;
-		width = HEIGHT;
-	}
+
 	
 	public Light(PApplet pApplet,int x,int y,int light){
-		super(pApplet);
-		this.x = x;
-		this.y = y;
-		width = HEIGHT;
+		super(x,y,//upperleft
+				HEIGHT,//width
+				HEIGHT,//height
+				pApplet);
+		this.setAnchor(PositionAnchor.UPPER_LEFT);
+
 		this.light = light;
 	}
 	
-	public void move(int x,int y,PGraphics g){
-		this.x += x;
-		this.y += y;
-		calcColors(g);
-	}
+	
 	
 	public void resize(int width){
-		this.width = width;
-	}
-	
-	public boolean on(Vector3D v){
-		return this.contained((int)v.x) && v.y >= this.y && v.y <=this.y+HEIGHT;
-		
+		this.setWidthLocal(width);
 	}
 	
 	public boolean contained(int x){
-		return x>=this.x && x<=(this.x+this.width);
+		return true;//x>=a. && x<=(this.x+this.width);
 	}
 	
 	@Override
@@ -66,56 +51,13 @@ public class Light extends MTComponent {
 	    g.stroke(0);
 	    g.strokeWeight(3);
 	    
+	    float w = this.getWidthXY(TransformSpace.GLOBAL);
+	    Vector3D c = this.getCenterPointLocal();
 		//g.ellipseMode(CENTER);
-		g.ellipse(x+width/2,y+HEIGHT/2,width,HEIGHT);
+		g.ellipse(c.x,c.y,w,HEIGHT);
 		
 	}
 	
-	
-	private void calcColors(PGraphics g){
-		float v = 1;
-		float Shsv = 1;
-		
-		
-		int height = g.height;
-		float hue = (float)x/height*360;
-		float hueP = hue/60;
-		
-		float C = v*Shsv;
-		float X = C*(1-Math.abs(hueP%2-1));
-		
-		int m = (int)(v - C);
-		
-		if(hueP >= 0 && hueP >1){
-			red = (int) (C + m);
-			green = (int) (X + m);
-			blue = m;
-		}else if(hueP < 2){
-			red = (int) (X + m);
-			green = (int) (C + m);
-			blue = m;
-		}else if(hueP < 3){
-			red = m;
-			green = (int) (C + m);
-			blue = (int) (X + m);
-		}else if(hueP < 4){
-			red = m;
-			green = (int) (X + m);
-			blue = (int) (C + m);
-		}else if(hueP < 5){
-			red = (int) (X + m);
-			green = 0;
-			blue = (int) (C + m);
-		}else if(hueP < 6){
-			red = (int) (C + m);
-			green = 0;
-			blue = (int) (X + m);
-		}else{
-			red = m;
-			green = m;
-			blue = m;
-		}
-	}
 	
 	public int red(){
 		return red;
@@ -127,6 +69,21 @@ public class Light extends MTComponent {
 	
 	public int green(){
 		return green;
+	}
+	
+	public boolean processGestureEvent(MTGestureEvent ge) {
+		System.out.println("gesture");
+		System.out.println(ge);
+		/*switch (te.getId()) {
+		case MTGestureEvent.GESTURE_DETECTED:
+			System.out.println("Gesture detected");
+			break;
+		case MTGestureEvent.GESTURE_UPDATED:
+			break;
+		case MTGestureEvent.GESTURE_ENDED:
+			break;
+		}*/
+		return false;
 	}
 
 }
