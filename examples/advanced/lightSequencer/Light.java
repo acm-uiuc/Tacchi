@@ -78,12 +78,12 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 		g.colorMode(g.HSB, applet.height);
 		int color = g.color(c.y, applet.height, applet.height);
 		red = (g.color(color) >> 16) & 0xFF;
-		blue = (g.color(color) >> 8) & 0xFF;
-		green = g.color(color) & 0xFF;
+		green = (g.color(color) >> 8) & 0xFF;
+		blue = g.color(color) & 0xFF;
 		g.colorMode(g.RGB, 255);
-	    this.setFillColor(new MTColor(red,green,blue,150));
+	    this.setFillColor(new MTColor(red,green,blue,100));
 	    this.setStrokeWeight(3);
-	    this.setStrokeColor(new MTColor(0,0,0,150));
+	    this.setStrokeColor(new MTColor(red,green,blue,175));
 	    
 	    super.drawComponent(g);
 	    g.fill(255);

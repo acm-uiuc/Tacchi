@@ -42,9 +42,9 @@ class LightManager extends Thread{
 					Light temp = lightArray.get(i);
 					if(!temp.inDock() && temp.distance(p.position) > 0)
 					{
-					data[3*temp.getNum()] = new Integer((int) (temp.red()*temp.distance(p.position)/100));
-					data[3*temp.getNum()+1] = new Integer((int) (temp.blue()*temp.distance(p.position)/100));
-					data[3*temp.getNum()+2] = new Integer((int) (temp.green()*temp.distance(p.position)/100));
+					data[3*temp.getNum()] = new Integer((int) (temp.red()*(temp.distance(p.position)/100)));
+					data[3*temp.getNum()+1] = new Integer((int) (temp.green()*(temp.distance(p.position)/100)));
+					data[3*temp.getNum()+2] = new Integer((int)(temp.blue()*(temp.distance(p.position)/100))) ;
 					}
 				}
 				for(int i = 0; i < data.length; i++)
