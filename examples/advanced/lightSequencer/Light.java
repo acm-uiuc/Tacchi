@@ -54,8 +54,9 @@ public class Light extends MTRectangle implements IGestureEventListener {
 	
 	@Override
 	public void drawComponent(PGraphics g) {
+	    Vector3D c = this.getCenterPointLocal();
 		g.colorMode(g.HSB, applet.height);
-		int color = g.color(y, applet.height, applet.height);
+		int color = g.color(c.y, applet.height, applet.height);
 		red = (g.color(color) >> 16) & 0xFF;
 		blue = (g.color(color) >> 8) & 0xFF;
 		green = g.color(color) & 0xFF;
@@ -64,12 +65,11 @@ public class Light extends MTRectangle implements IGestureEventListener {
 	    g.stroke(0);
 	    g.strokeWeight(3);
 	    float w = this.getWidthXY(TransformSpace.GLOBAL);
-	    Vector3D c = this.getCenterPointLocal();
 		//g.ellipseMode(CENTER);
 		g.ellipse(c.x,c.y,w,HEIGHT);
 		
 	    g.fill(255);
-	    g.text(""+light, x+width/2, y+2*width/3);
+	    g.text(""+light, c.x, c.y);
 	}
 	
 	
