@@ -19,6 +19,7 @@ package advanced.lightSequencer;
 
 import java.awt.event.KeyEvent;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
@@ -53,10 +54,21 @@ public class LightSequencerScene extends AbstractScene{
 	/////////
 	
 	private MTApplication app;
+	
+	private ArrayList<Light> lightArray;
+	
+	public static int NUM_LIGHTS = 24;
 
 	public LightSequencerScene(MTApplication mtApplication, String name) {
 		super(mtApplication, name);
 		this.app = mtApplication;
+		
+		lightArray = new ArrayList<Light>();
+		
+		for(int i = 0; i < 24; i++)
+		{
+			lightArray.add(new Light(mtApplication,0,0,i));
+		}
 		
 		if (!MT4jSettings.getInstance().isOpenGlMode()){
 			System.err.println("Scene only usable when using the OpenGL renderer! - See settings.txt");

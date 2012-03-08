@@ -33,11 +33,12 @@ public class Light extends MTComponent {
 		width = HEIGHT;
 	}
 	
-	public Light(PApplet pApplet,int x,int y){
+	public Light(PApplet pApplet,int x,int y,int light){
 		super(pApplet);
 		this.x = x;
 		this.y = y;
 		width = HEIGHT;
+		this.light = light;
 	}
 	
 	public void move(int x,int y,PGraphics g){
