@@ -60,10 +60,10 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 		docked = true;
 	}
 	
-	public int distance(int x){
+	public float distance(int x){
 	    Vector3D c = this.getCenterPointGlobal();
 	    float w = this.getWidthXY(TransformSpace.GLOBAL);
-	    int r = 100/ (int) w;
+	    float r = 100/  w;
 		if (x > c.x - w/2 && x < c.x + w/2)
 			return 100 - Math.abs((int)c.x - x)*r;
 		else return 0;
