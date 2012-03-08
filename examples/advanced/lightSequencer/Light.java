@@ -87,7 +87,7 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 	
 	public boolean inDock() {
 	    Vector3D c = this.getCenterPointGlobal();
-		if (c.x > 9*applet.height/10)
+		if (c.y > 9*applet.height/10)
 			return true;
 		else return false;
 	}
