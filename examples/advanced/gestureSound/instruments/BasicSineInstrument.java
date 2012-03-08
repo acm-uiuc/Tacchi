@@ -44,7 +44,7 @@ public class BasicSineInstrument extends Instrument {
 	}
 	
 	private float mapFreq(float freq) {
-		return midiToFreq(Math.min(freq, 127f));
+		return midiToFreq(Math.max(0,Math.min(freq, 127f)));
 	}
 	
 	private float mapCutoff(float cutoff) {

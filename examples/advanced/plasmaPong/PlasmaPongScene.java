@@ -18,7 +18,10 @@
 package advanced.plasmaPong;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.nio.FloatBuffer;
+import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
@@ -41,6 +44,11 @@ import processing.opengl.PGraphicsOpenGL;
 
 import com.sun.opengl.util.BufferUtil;
 
+import de.sciss.net.OSCClient;
+import de.sciss.net.OSCMessage;
+import de.sciss.net.OSCPacket;
+
+
 /**
  * The Class FluidSimulationScene.
  * 
@@ -61,7 +69,10 @@ public class PlasmaPongScene extends AbstractScene{
 	private ParticleSystem particleSystem;
 	/////////
 	
+	private Thread OSCThread;
+	
 	private MTApplication app;
+	
 
 	public PlasmaPongScene(MTApplication mtApplication, String name) {
 		super(mtApplication, name);
@@ -88,6 +99,8 @@ public class PlasmaPongScene extends AbstractScene{
         // Create particle system
         particleSystem = new ParticleSystem(mtApplication, fluidSolver);
         
+        OSCThread = new Thread(new LightsManager(fluidSolver));
+        OSCThread.start();
         this.getCanvas().addInputListener(new IMTInputEventListener() {
         	//@Override
         	public boolean processInputEvent(MTInputEvent inEvt){
@@ -120,6 +133,8 @@ public class PlasmaPongScene extends AbstractScene{
 		});
         
         pong = new PongGame(mtApplication, fluidSolver);
+        
+
 
         //FIXME make componentInputProcessor?
         
@@ -159,15 +174,15 @@ public class PlasmaPongScene extends AbstractScene{
 	
 	@Override
 	public void drawAndUpdate(PGraphics graphics, long timeDelta) {
-//		this.drawFluidImage();
+		//		this.drawFluidImage();
 		super.drawAndUpdate(graphics, timeDelta);
-		
-		//graphics.fill(30,160,30);
-		//graphics.rect(10,10,100,100);
-		//System.out.println("asdf");
-		//b.draw(graphics, fluidSolver);
 
-//		app.noSmooth();
+			//graphics.fill(30,160,30);
+			//graphics.rect(10,10,100,100);
+			//System.out.println("asdf");
+			//b.draw(graphics, fluidSolver);
+
+			//		app.noSmooth();
 //		app.fill(255,255,255,255);
 //		app.tint(255,255,255,255);
 //		
@@ -231,15 +246,15 @@ public class PlasmaPongScene extends AbstractScene{
 	
 	private void drawFluidImage(){
 		app.colorMode(PApplet.RGB, 1);  
-		 
 		fluidSolver.update();
 	    if(drawFluid) {
 	        for(int i=0; i<fluidSolver.getNumCells(); i++) {
 	            int d = 2;
 	            imgFluid.pixels[i] = app.color(fluidSolver.r[i] * d, fluidSolver.g[i] * d, fluidSolver.b[i] * d);
-	        }  
+	        }
+	 
 	        imgFluid.updatePixels();//  fastblur(imgFluid, 2);
-	        
+
 //	        app.image(imgFluid, 0, 0, app.width, app.height); //FIXME this messes up blend transition!
 	        
 	        app.textureMode(app.NORMALIZED);

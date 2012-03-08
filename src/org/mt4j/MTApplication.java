@@ -52,8 +52,6 @@ import org.mt4j.util.opengl.GLFBO;
 
 import processing.core.PApplet;
 
-
-
 /**
  * Use this class to create a new multitouch application.
  * <br>The best way to create your application would be to extend this class and
