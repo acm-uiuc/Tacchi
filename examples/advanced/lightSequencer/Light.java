@@ -21,7 +21,7 @@ import processing.core.PFont;
 import processing.core.PGraphics;
 
 public class Light extends MTRoundRectangle implements IGestureEventListener {
-	public static int HEIGHT = 30;
+	public static int HEIGHT = 50;
 	
 	//colors
 	private int red;
@@ -41,7 +41,7 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 	public Light(PApplet pApplet,int x,int y,int light,LightSequencerScene parent,PFont f){
 		super(x,y,//upperleft
 				1,//z??
-				HEIGHT,//width
+				(int)(HEIGHT*1.5),//width
 				HEIGHT,//height
 				HEIGHT/2,//the arc width
 				HEIGHT/2,//the arc height
@@ -125,6 +125,7 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 			
 			this.setPositionGlobal(p);
 			
+			
 			if(docked){
 				if(!inDock()){
 					parent.addNewLight(light);
@@ -140,14 +141,23 @@ public class Light extends MTRoundRectangle implements IGestureEventListener {
 		}
 		
 		if(ge.getClass() == ScaleEvent.class){
-			ScaleEvent se = (ScaleEvent)ge;
-			float factor = se.getScaleFactorX();
-			float w = this.getWidthXY(TransformSpace.GLOBAL);
-			float newW = w*factor;
-			if(newW < HEIGHT){
-				newW = HEIGHT;
+			if(!inDock()){
+				ScaleEvent se = (ScaleEvent)ge;
+			
+				float factor = se.getScaleFactorX();
+				float w = this.getWidthXY(TransformSpace.GLOBAL);
+				float newW = w*factor;
+				if(newW < HEIGHT){
+					newW = HEIGHT;
+				}
+				
+				Vector3D p = this.getCenterPointGlobal();
+				p.x -= (newW-w)/2;
+				
+				this.setPositionGlobal(p);
+				
+				this.setSizeLocal(newW, HEIGHT);
 			}
-			this.setSizeLocal(newW, HEIGHT);
 		}
 		return false;
 	}

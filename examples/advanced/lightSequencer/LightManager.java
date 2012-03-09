@@ -55,7 +55,7 @@ class LightManager extends Thread{
 				try {
 					osc.send(p);
 				} catch (IOException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 				last = System.currentTimeMillis();
 			}
