@@ -56,6 +56,7 @@ import scenes.WaterSceneExportObf;
 import sun.misc.GC;
 import advanced.drawing.MainDrawingScene;
 import advanced.fluidSimulator2.FluidSimulationScene;
+import advanced.lightSequencer.LightSequencerScene;
 import advanced.models3D.Models3DScene;
 import advanced.modestMapsMT.MapsScene;
 import advanced.physics.scenes.AirHockeyScene;
@@ -225,6 +226,15 @@ public class MTShellScene extends AbstractScene {
 				return "Maps";
 			}
 		}, app.loadImage(this.getPathToIcons() + "maps_s.png"));
+		
+		this.addScene(new ICreateScene() {
+			public Iscene getNewScene() {
+				return new LightSequencerScene(app, "Light Sequencer");
+			}
+			public String getTitle() {
+				return "Light Sequencer";
+			}
+		}, app.loadImage(this.getPathToIcons() + "lightseq_s.png"));
 	
 		this.addScene(new ICreateScene() {
 			public Iscene getNewScene() {
